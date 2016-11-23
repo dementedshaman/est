@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div>
+    <h2> Analise </h2>
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th>Titulo</th>
+            <td>{{ analise.titulo }}</td>
+        </tr>
+        <tr>
+            <th>Data Criação</th>
+            <td>{{ analise.data_criado }}</td>
+        </tr>
+        <tr>
+            <th>Número de Classes</th>
+            <td>{{ analise.numClasses }}</td>
+        </tr>
+        <tr>
+            <th>Variação</th>
+            <td>{{ analise.variation }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2> Tabela </h2>
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th>Classe</th>
+            <th>fi</th>
+            <th>Fi</th>
+            <th>fri</th>
+            <th>Fri</th>
+            <th>Xi</th>
+            <th>%</th>
+            <th>Ang</th>
+            <th>xifi</th>
+        </tr>
+        {% for table in tables %}
+        <tr>
+            <td>{{ table.classe }}</td>
+            <td>{{ table.fi }}</td>
+            <td>{{ table.fia }}</td>
+            <td>{{ table.fri }}</td>
+            <td>{{ table.fria }}</td>
+            <td>{{ table.xi }}</td>
+            <td>{{ table.perc }}</td>
+            <td>{{ table.ang }}</td>
+            <td>{{ table.xifi }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2> Colunas </h2>
+    <div id="chart_div"></div>
+</div>
+
+<div>
+    <h2> Pizza </h2>
+    <div id="piechart"></div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+     <script>
+     google.charts.load('current', {packages: ['corechart', 'bar']});
+     google.charts.setOnLoadCallback(drawBasic);
+
+    function drawBasic() {
+
+       var data = new google.visualization.DataTable();
+       data.addColumn('timeofday', 'Time of Day');
+       data.addColumn('number', 'Motivation Level');
+
+       data.addRows([
+       {% for table in tables %}
+         [{v: [{{ table.classe.inicio }}, 0, 0], f: '{{ table.fi }}'}, {{ table.fi }}],
+       {% endfor %}
+       ]);
+
+       var options = {
+         title: 'fi por classe',
+         hAxis: {
+           title: 'Classes',
+           viewWindow: {
+             min: [{{ bar_graph_x_min }}, {{ bar_graph_y_min }} , 0],
+             max: [{{ bar_graph_x_max }}, {{ bar_graph_y_max }} , 0]
+           }
+         },
+         vAxis: {
+           title: 'fi'
+         }
+       };
+
+       var chart = new google.visualization.ColumnChart(
+         document.getElementById('chart_div'));
+
+       chart.draw(data, options);
+     }
+
+     google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Classe', 'fi'],
+          {% for table in tables %}
+          ['{{ table.classe }}',    {{ table.fi }}],
+          {% endfor %}
+        ]);
+
+        var options = {
+          title: 'Pizza'
+        };
+
+        var pieChart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        pieChart.draw(data, options);
+      }
+     </script>
+{% endblock %}
