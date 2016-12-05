@@ -22,11 +22,14 @@ class AvaliationNew(CreateView):
             self.request, messages.SUCCESS, 'Atividade submetida com sucesso!',
             fail_silently=True,
         )
-        return redirect('/view/' + str(self.object.id ))
+        return redirect('/core/view/' + str(self.object.id ))
 
 def index(request):
+    analises = Analise.objects.all()
 
-    return render(request, 'base.html', { })
+    return render(request, 'core/index.html', {
+        'analises': analises,
+    })
 
 def view(request, id):
     analise = Analise.objects.get(pk=id)

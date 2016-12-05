@@ -20,10 +20,11 @@ from django.conf import settings
 from core import views as core
 
 urlpatterns = [
+
     url(r'^admin/', admin.site.urls),
     url(r'^core/$', core.index, name='index'),
     url(r'^core/new$', core.AvaliationNew.as_view(success_url="/core/"), name='core_new'),
-    url(r'^view/(?P<id>\w+)$', core.view, name='view'),
+    url(r'^core/view/(?P<id>\w+)$', core.view, name='view'),
 
 
 ] + static(settings.MEDIA_URL_PROXY, document_root=settings.MEDIA_ROOT)
