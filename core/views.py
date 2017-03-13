@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic.edit import CreateView, UpdateView
 from .models import Analise, Classe, Data, Table
+from pprint import pprint
 
 from django.contrib import messages
 
@@ -17,6 +18,7 @@ class AvaliationNew(CreateView):
         self.object.calcSturges()
         self.object.catClasses()
         self.object.constructTable()
+        self.object.calcM()
 
         messages.add_message(
             self.request, messages.SUCCESS, 'Atividade submetida com sucesso!',
@@ -42,6 +44,9 @@ def view(request, id):
     return render(request, 'core/view.html', {
         'analise': analise,
         'tables': analise.tables.all(),
+        'data': analise.data.all(),
+        'desvioCima': analise.media + analise.desvio,
+        'desvioBaixo': analise.media - analise.desvio,
         'bar_graph_x_min': bar_graph_x_min,
         'bar_graph_x_max': bar_graph_x_max,
         'bar_graph_y_min': bar_graph_y_min,

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load bootstrap %}
 {% load staticfiles %}
+{% load modulus %}
 
 {% block content %}
 
@@ -23,6 +24,22 @@
         <tr>
             <th>Variação</th>
             <td>{{ analise.variation }}</td>
+        </tr>
+        <tr>
+            <th>Media</th>
+            <td>{{ analise.media }}</td>
+        </tr>
+        <tr>
+            <th>Moda</th>
+            <td>{{ analise.moda }}</td>
+        </tr>
+        <tr>
+            <th>Mediana</th>
+            <td>{{ analise.mediana }}</td>
+        </tr>
+        <tr>
+            <th>Desvio Padrão</th>
+            <td>{{ analise.desvio }}</td>
         </tr>
         </tbody>
     </table>
@@ -68,6 +85,11 @@
 <div>
     <h2> Pizza </h2>
     <div id="piechart"></div>
+</div>
+
+<div>
+    <h2> Geral </h2>
+    <div id="corechart"></div>
 </div>
 
 {% endblock %}
@@ -130,5 +152,32 @@
 
         pieChart.draw(data, options);
       }
+
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawVisualization);
+
+    function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+            ['Posicao', 'Ponto', 'Media', 'Mediana', 'Moda', 'Desvio Padrão Superior', 'Desvio Padrão Inferior'],
+            {% for d in data %}
+            [{{ d.id|modulus:10 }},{{ d.value }},{{ analise.media }},{{ analise.mediana }}, {{analise.moda}}, {{desvioCima}}, {{desvioBaixo}}],
+            {% endfor %}
+        ]);
+
+        var options = {
+            title : 'Monthly Coffee Production by Country',
+            vAxis: {title: 'Cups'},
+            hAxis: {title: 'Month'},
+            seriesType: 'scatter',
+            series: {1: {type: 'line'}, 2: {type: 'line'}, 3:{type: 'line'}, 4:{type: 'line'}, 5:{type: 'line'}}
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('corechart'));
+            chart.draw(data, options);
+        }
+    
+
+    
      </script>
 {% endblock %}

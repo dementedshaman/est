@@ -16,6 +16,7 @@ class Analise(models.Model):
     media = models.FloatField(blank=True, null=True)
     moda = models.FloatField(blank=True, null=True)
     mediana = models.FloatField(blank=True, null=True)
+    desvio = models.FloatField(blank=True, null=True)
 
     def saveCsv(self):
         with open (self.csv.path, 'r') as csvfile:
@@ -63,11 +64,39 @@ class Analise(models.Model):
                 xi= (classe.fim + classe.inicio) / 2,
                 perc=round((classe.caData.count() / classe.analise.data.all().count())  * 100, 3),
                 ang=round(((classe.caData.count() + ultimoFia) / classe.analise.data.all().count()) * 360, 3),
-                xifi=1
+                xifi= (classe.caData.count() * ( (classe.fim + classe.inicio) /2 ))
             )
             table.save()
             ultimaClasse = classe
             ultimaTable = table
+
+    def calcM(self):
+        somXifi = self.tables.aggregate(models.Sum('xifi'))['xifi__sum']
+        somFi = self.tables.aggregate(models.Sum('fi'))['fi__sum']
+        media = somXifi/somFi
+        modaClasse = self.tables.all().order_by('fi').last()
+        modaClasseAnt = self.tables.filter(classe__fim=modaClasse.classe.inicio).first()
+        modaClassePost = self.tables.filter(classe__inicio=modaClasse.classe.fim).first()
+        moda = ( modaClasse.classe.inicio + (((modaClasse.fi - modaClasseAnt.fi) / (2 * modaClasse.fi - (modaClasseAnt.fi + modaClassePost.fi) ) ) * self.variation ) )
+        medianaNum = ( somFi + 1 ) / 2
+        medianaClasse = self.tables.filter(fia__gt=medianaNum).order_by('fia').first()
+        medianaClasseAnt = self.tables.filter(fia__lt=medianaNum).order_by('fia').last()
+        mediana = ( medianaClasse.classe.inicio + ((((somFi/2) - medianaClasseAnt.fia) / medianaClasse.fi)*self.variation) )
+
+        sumEls = 0
+
+        for d in self.data.all():
+            sumEls = sumEls + (d.value - media)
+
+        desvio = round(math.sqrt( round(((sumEls ** 2) / (somFi-1)) , 2) ), 3)
+        
+        self.media = round(media, 2)
+        self.moda = round(moda, 2)
+        self.mediana = round(mediana, 2)
+        self.desvio = round(desvio, 2)
+
+        self.save()
+
 
     def __str__(self):
         return self.titulo
