@@ -1,3 +1,8 @@
 venv/*
 *.pyc
 */*.pyc
+*.swo
+*/*.swp
+*.swp
+*/*.swp
+
