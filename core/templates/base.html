@@ -28,7 +28,7 @@
     <link href="{% static "css/iCheck/all.css" %}" rel="stylesheet" type="text/css" />
     <!-- bootstrap wysihtml5 - text editor -->
     <!-- <link href="{% static "css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" %}" rel="stylesheet" type="text/css" /> -->
-    <link href='http://fonts.googleapis.com/css?family=Lato" %}' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <!-- Theme style -->
     <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css" />
 
@@ -76,7 +76,7 @@
                                         <li><!-- start message -->
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="img/26115.jpg" class="img-circle" alt="User Image"/>
+                                                    <img src="{% static "img/26115.jpg" %}" class="img-circle" alt="User Image"/>
                                                 </div>
                                                 <h4>
                                                     Support Team
@@ -88,7 +88,7 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="img/26115.jpg" class="img-circle" alt="user image"/>
+                                                    <img src="{% static "img/26115.jpg" %}" class="img-circle" alt="user image"/>
                                                 </div>
                                                 <h4>
                                                     Director Design Team
@@ -101,7 +101,7 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="img/avatar.png" class="img-circle" alt="user image"/>
+                                                    <img src="{% static "img/avatar.png" %}" class="img-circle" alt="user image"/>
                                                 </div>
                                                 <h4>
                                                     Developers
@@ -114,7 +114,7 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="img/26115.jpg" class="img-circle" alt="user image"/>
+                                                    <img src="{% static "img/26115.jpg" %}" class="img-circle" alt="user image"/>
                                                 </div>
                                                 <h4>
                                                     Sales Department
@@ -127,7 +127,7 @@
                                         <li>
                                             <a href="#">
                                                 <div class="pull-left">
-                                                    <img src="img/avatar.png" class="img-circle" alt="user image"/>
+                                                    <img src="{% static "img/avatar.png" %}" class="img-circle" alt="user image"/>
                                                 </div>
                                                 <h4>
                                                     Reviewers
@@ -539,7 +539,7 @@
                     <ul class="media-list">
                         <li class="media">
                             <a href="#" class="pull-left">
-                                <img src="img/26115.jpg" alt="Avatar" class="img-circle" width="64" height="64">
+                                <img src="{% static "img/26115.jpg" %}" alt="Avatar" class="img-circle" width="64" height="64">
                             </a>
                             <div class="media-body">
                                 <span class="text-muted pull-right">
@@ -558,7 +558,7 @@
                         </li>
                         <li class="media">
                             <a href="#" class="pull-left">
-                                <img src="img/26115.jpg" alt="Avatar" class="img-circle" width="64" height="64">
+                                <img src="{% static "img/26115.jpg" %}" alt="Avatar" class="img-circle" width="64" height="64">
                             </a>
                             <div class="media-body">
                                 <span class="text-muted pull-right">
@@ -590,27 +590,27 @@
 
                                 <ul class="list-group teammates">
                                     <li class="list-group-item">
-                                        <a href=""><img src="img/26115.jpg" width="50" height="50"></a>
+                                        <a href=""><img src="{% static "img/26115.jpg" %}" width="50" height="50"></a>
                                         <span class="pull-right label label-danger inline m-t-15">Admin</span>
                                         <a href="">Damon Parker</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href=""><img src="img/26115.jpg"  width="50" height="50"></a>
+                                        <a href=""><img src="{% static "img/26115.jpg" %}"  width="50" height="50"></a>
                                         <span class="pull-right label label-info inline m-t-15">Member</span>
                                         <a href="">Joe Waston</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href=""><img src="img/26115.jpg"  width="50" height="50"></a>
+                                        <a href=""><img src="{% static "img/26115.jpg" %}"  width="50" height="50"></a>
                                         <span class="pull-right label label-warning inline m-t-15">Editor</span>
                                         <a href="">Jannie Dvis</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href=""><img src="img/26115.jpg"  width="50" height="50"></a>
+                                        <a href=""><img src="{% static "img/26115.jpg" %}"  width="50" height="50"></a>
                                         <span class="pull-right label label-warning inline m-t-15">Editor</span>
                                         <a href="">Emma Welson</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href=""><img src="img/26115.jpg"  width="50" height="50"></a>
+                                        <a href=""><img src="{% static "img/26115.jpg" %}"  width="50" height="50"></a>
                                         <span class="pull-right label label-success inline m-t-15">Subscriber</span>
                                         <a href="">Emma Welson</a>
                                     </li>
@@ -818,43 +818,6 @@
                 checkboxClass: 'icheckbox_flat-grey',
                 radioClass: 'iradio_flat-grey'
             });
-</script>
-<script type="text/javascript">
-    $(function() {
-                "use strict";
-                //BAR CHART
-                var data = {
-                    labels: ["January", "February", "March", "April", "May", "June", "July"],
-                    datasets: [
-                        {
-                            label: "My First dataset",
-                            fillColor: "rgba(220,220,220,0.2)",
-                            strokeColor: "rgba(220,220,220,1)",
-                            pointColor: "rgba(220,220,220,1)",
-                            pointStrokeColor: "#fff",
-                            pointHighlightFill: "#fff",
-                            pointHighlightStroke: "rgba(220,220,220,1)",
-                            data: [65, 59, 80, 81, 56, 55, 40]
-                        },
-                        {
-                            label: "My Second dataset",
-                            fillColor: "rgba(151,187,205,0.2)",
-                            strokeColor: "rgba(151,187,205,1)",
-                            pointColor: "rgba(151,187,205,1)",
-                            pointStrokeColor: "#fff",
-                            pointHighlightFill: "#fff",
-                            pointHighlightStroke: "rgba(151,187,205,1)",
-                            data: [28, 48, 40, 19, 86, 27, 90]
-                        }
-                    ]
-                };
-            new Chart(document.getElementById("linechart").getContext("2d")).Line(data,{
-                responsive : true,
-                maintainAspectRatio: false,
-            });
-
-            });
-            // Chart.defaults.global.responsive = true;
 </script>
     {% block js %}
     {% endblock %}

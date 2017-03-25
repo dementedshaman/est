@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div>
+    <h2> Tabela </h2>
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th>#</th>
+            <th>Titulo</th>
+            <th>Data de criação</th>
+            <th>Nº Classes</th>
+            <th>Opções</th>
+        </tr>
+        {% for analise in analises %}
+        <tr>
+            <td>{{ analise.id }}</td>
+            <td>{{ analise.titulo }}</td>
+            <td>{{ analise.data_criado }}</td>
+            <td>{{ analise.numClasses }}</td>
+            <td>
+                <a class="btn btn-default btn-xs" href="{% url "view" analise.id %}">
+                    <i class="fa fa-eye"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

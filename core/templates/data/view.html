@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% load staticfiles %}
+{% load modulus %}
+
+{% block content %}
+
+<div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <a href='{% url "view" analise.id %}'>
+                <div class="stat">
+                    <div class="stat-icon" style="color:#fa8564;">
+                        <i class="fa fa-arrow-left fa-3x stat-elem"></i>
+                    </div>
+                        <h5 class="stat-info"> Voltar </h5>
+                </div>
+            </a>
+        </div>
+        {% comment %}<div class="col-md-2">
+            <a href='{% url "data-create" analise.id %}'>
+                <div class="stat">
+                    <div class="stat-icon" style="color:#00ff00">
+                        <i class="fa fa-plus fa-3x stat-elem"></i>
+                    </div>
+                        <h5 class="stat-info"> Adicionar </h5>
+                </div>
+            </a>
+        </div>{% endcomment %}
+    </div>
+
+    <h2> Analise </h2>
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th>Titulo</th>
+            <td>{{ analise.titulo }}</td>
+        </tr>
+        <tr>
+            <th>Data Criação</th>
+            <td>{{ analise.data_criado }}</td>
+        </tr>
+        <tr>
+            <th>Número de Classes</th>
+            <td>{{ analise.numClasses }}</td>
+        </tr>
+        <tr>
+            <th>Variação</th>
+            <td>{{ analise.variation }}</td>
+        </tr>
+        <tr>
+            <th>Media</th>
+            <td>{{ analise.media }}</td>
+        </tr>
+        <tr>
+            <th>Moda</th>
+            <td>{{ analise.moda }}</td>
+        </tr>
+        <tr>
+            <th>Mediana</th>
+            <td>{{ analise.mediana }}</td>
+        </tr>
+        <tr>
+            <th>Desvio Padrão</th>
+            <td>{{ analise.desvio }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h2> Classes </h2>
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+            <th>#</th>
+            <th>Valor</th>
+            <th>Opções</th>
+        </tr>
+        {% for d in data %}
+        <tr>
+            <td>{{ d.id|modulus:dmin }}</td>
+            <td>{{ d.value }}</td>
+            <td>
+                <a href='{% url 'data-edit' d.pk %}'>Editar</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

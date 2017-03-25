@@ -6,11 +6,26 @@ from pprint import pprint
 # Create your models here.
 
 class Analise(models.Model):
+
+    T_CSV = 1
+    T_RAWINPUT = 2
+
+    TIPO_CHOICES = (
+        (T_CSV, 'CSV'),
+        (T_RAWINPUT, 'RawInput'),
+    )
+
     titulo = models.CharField(max_length=50)
     data_criado = models.DateField(auto_now=True)
-    csv = models.FileField(upload_to='uploads/csv')
-    csvDel = models.CharField(max_length=1)
-    csvQuo = models.CharField(max_length=1)
+    csv = models.FileField(upload_to='uploads/csv', blank=True, null=True)
+    csvDel = models.CharField(max_length=1, blank=True, null=True)
+    csvQuo = models.CharField(max_length=1, blank=True, null=True)
+    rawinput = models.TextField(blank=True, null=True)
+    rawinputDel = models.CharField(max_length=1, blank=True, null=True, help_text='Não usar espaço')
+    swCsvRi = models.PositiveSmallIntegerField(
+        choices=TIPO_CHOICES,
+        default=T_CSV,
+    )
     numClasses = models.IntegerField(blank=True, null=True)
     variation = models.FloatField(blank=True, null=True)
     media = models.FloatField(blank=True, null=True)
@@ -25,6 +40,12 @@ class Analise(models.Model):
                 for element in row:
                     data = Data(analise=self, value=float(element), classe=None)
                     data.save()
+    
+    def saveRawInput(self):
+        dataArray =  self.rawinput.split(self.rawinputDel)
+        for element in dataArray:
+            data = Data(analise=self, value=float(element), classe=None)
+            data.save()
 
     def calcSturges(self):
         numClasses = 1 + (3.3 * math.log(self.data.count(), 10))

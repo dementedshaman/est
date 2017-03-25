@@ -22,9 +22,15 @@ from core import views as core
 urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
+    
+    # Analise
     url(r'^core/$', core.index, name='index'),
     url(r'^core/new$', core.AvaliationNew.as_view(success_url="/core/"), name='core_new'),
     url(r'^core/view/(?P<id>\w+)$', core.view, name='view'),
+    
+    # Data
+    url(r'^data/view/(?P<id>\w+)$', core.dataView, name='data-view'),
+    url(r'^data/edit/(?P<id>\w+)$', core.DataUpdate.as_view(success_url="/view/"), name='data-edit'),
 
 
 ] + static(settings.MEDIA_URL_PROXY, document_root=settings.MEDIA_ROOT)

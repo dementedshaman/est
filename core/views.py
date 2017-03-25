@@ -1,20 +1,23 @@
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Analise, Classe, Data, Table
-from pprint import pprint
+from django.urls import reverse_lazy
 
 from django.contrib import messages
 
 class AvaliationNew(CreateView):
     model = Analise
-    fields = ['titulo', 'csv', 'csvDel', 'csvQuo']
+    fields = ['swCsvRi', 'titulo', 'csv', 'csvDel', 'csvQuo', 'rawinput', 'rawinputDel']
     template_name = 'core/create.html'
 
     def form_valid(self, form):
         self.object = form.save()
-        self.object.saveCsv()
+        if ( form.cleaned_data.get('swCsvRi', 1) == 1):
+            self.object.saveCsv()
+        else:
+            self.object.saveRawInput()
         self.object.calcSturges()
         self.object.catClasses()
         self.object.constructTable()
@@ -52,3 +55,31 @@ def view(request, id):
         'bar_graph_y_min': bar_graph_y_min,
         'bar_graph_y_max': bar_graph_y_max,
     })
+
+def dataView(request, id):
+    analise = Analise.objects.get(pk=id)
+
+    return render(request, 'data/view.html', {
+        'analise': analise,
+        'data': analise.data.all().order_by('id'),
+        'dmin': analise.data.order_by('id').first().id,
+    })
+
+class DataUpdate(UpdateView):
+    model = Data
+    fields = ['value']
+    template_name = 'data/create.html'
+    
+    def get_object(self, queryset=None):
+        obj = Data.objects.filter(id=self.kwargs['id']).first()
+        return obj
+
+    def get_success_url(self):
+        return reverse('data-view', kwargs={'id': self.get_object().analise.id})
+    
+    # template_name_suffix = '_update_form'
+# def dataCreate():
+
+class dataDelete(DeleteView):
+    model = Data
+    success_url = reverse_lazy('author-list')
