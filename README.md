@@ -18,6 +18,12 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+* Criar Banco de dados est
+
+```
+psql -U username -d mydatabase -c 'CREATE DATABASE est'
+```
+
 * Faça o setup da aplicação, copiando o arquivo de settings local.
 
 ```
